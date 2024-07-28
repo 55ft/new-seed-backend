@@ -757,7 +757,16 @@ async function requireAsync(p) {
 }
 
 // 스킨 템플릿 렌더링
-async function render(req, title = '', content = '', varlist = {}, subtitle = '', error = null, viewname = '') {
+async function render(req, title = '', content = '', varlist = {}, subtitle = '', error = null, _viewname = '') {
+	return {
+		title,
+		content,
+		varlist,
+		subtitle,
+		error
+	};
+
+	//아래의 unreachable 코드는 스킨 렌더링용
 	const skinInfo = {
 		title: title + subtitle,
 		viewName: viewname,
@@ -1450,6 +1459,7 @@ const html = {
 	}
 };
 
+/*
 function cacheSkinList() {
     skinList.length = 0;
 	for(var prop of Object.getOwnPropertyNames(skincfgs))
@@ -1458,7 +1468,7 @@ function cacheSkinList() {
         skinList.push(dir);
 		skincfgs[dir] = require('./skins/' + dir + '/config.json');
     }
-}
+}*/
 
 function generateCaptcha(req, num) {
     if(!hostconfig.enable_captcha) return '';
@@ -1719,7 +1729,7 @@ module.exports = {
 	whtags,
 	whattr,
 	
-	config, getSkin, getperm, hasperm, readFile, exists, requireAsync, render, acltype, aclperms, exaclperms, fetchErrorString, fetchValue, alertBalloon, fetchNamespaces, err, showError, ip_pas, ipblocked, userblocked, getacl, navbtn, navbtnr, navbtnss, html, cacheSkinList, generateCaptcha, validateCaptcha,
+	config, getSkin, getperm, hasperm, readFile, exists, requireAsync, render, acltype, aclperms, exaclperms, fetchErrorString, fetchValue, alertBalloon, fetchNamespaces, err, showError, ip_pas, ipblocked, userblocked, getacl, navbtn, navbtnr, navbtnss, html, generateCaptcha, validateCaptcha,
 	processTitle, totitle, edittype, expireopt,
 	
 	conn, curs, insert,

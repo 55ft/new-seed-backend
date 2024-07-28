@@ -178,7 +178,6 @@ const wiki = express();  // 서버
 
 const functions = require('./functions');
 for(var item in functions) global[item] = functions[item];
-cacheSkinList();
 
 // 모듈 사용
 wiki.use(bodyParser.json());
