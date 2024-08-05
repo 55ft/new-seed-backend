@@ -1,22 +1,14 @@
 /* 병아리 엔진 - the seed 모방 프로젝트 */
 
-const http = require('http');
-const https = require('https');
-const path = require('path');
-const geoip = require('geoip-lite');
 const inputReader = require('wait-console-input');
-const { SHA3 } = require('sha3');
 const md5 = require('md5');
 const express = require('express');
 const session = require('express-session');
 const swig = require('swig');
-const ipRangeCheck = require('ip-range-check');
 const bodyParser = require('body-parser');
 const fs = require('fs');
-const diff = require('./cemerick-jsdifflib.js');
 const cookieParser = require('cookie-parser');
 const child_process = require('child_process');
-const captchapng = require('captchapng');
 const fileUpload = require('express-fileupload');
 
 function print(x) { console.log(x); }
@@ -272,7 +264,6 @@ wiki.get(/^\/skins\/((?:(?!\/).)+)\/(.+)/, async function sendSkinFile(req, res,
 		return next();
 	}
 	
-	var skinconfig = skincfgs[skinname];
 	/* if(!skinconfig.static_files.includes(filepath))
 		return next(); */
 	
@@ -298,7 +289,7 @@ wiki.get('/', redirectToFrontPage);
 wiki.use('/', router);
 
 // 404 페이지
-wiki.use(function(req, res, next) {
+wiki.use(function(req, res) {
     return res.status(404).send(`
 		<!DOCTYPE html>
 		<html>
@@ -612,29 +603,6 @@ wiki.use(function(req, res, next) {
 })();
 
 if(hostconfig.self_request) {
-	var rq = setInterval(function() {
-		https.request({
-			host: hostconfig.self_request,
-			path: '/RecentDiscuss',
-			headers: {
-				"Cookie": 'a=1; korori=a; ',
-				"Host": hostconfig.self_request,
-				"Accept-Encoding": "gzip, deflate",
-				"Connection": "keep-alive",
-				"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36",
-			},
-			port: 443,
-		}, function(res) {
-			var ret = '';
-
-			res.on('data', function(chunk) {
-				ret += chunk;
-			});
-
-			res.on('end', function() {
-			});
-		}).end();
-	}, (50 + Math.floor(Math.random() * 10)) * 1000);
 }
  
 }

@@ -3,23 +3,23 @@ const maxFileSize = 2000000;  // 최대 화일 크기 (기본값 2MB)
 const host = '127.5.5.5';  // 호스트 주소
 const port = 27775;  // 포트
 
-const http = require('http');
-const path = require('path');
-const express = require('express');
-const bodyParser = require('body-parser');
-const fs = require('fs');
-const fileUpload = require('express-fileupload');
+import http from 'http';
+import path from 'path';
+import express, { static as serveStatic } from 'express';
+import { json, urlencoded } from 'body-parser';
+import fs from 'fs';
+import fileUpload from 'express-fileupload';
 
-const { sha256 } = require('js-sha256');
-const sizeOf = require('image-size');
+import { sha256 } from 'js-sha256';
+import sizeOf from 'image-size';
 
 function print(x) { console.log(x); }
 function prt(x) { process.stdout.write(x); }
 
 const server = express();
 
-server.use(bodyParser.json());
-server.use(bodyParser.urlencoded({ extended: true }));
+server.use(json());
+server.use(urlencoded({ extended: true }));
 server.use(fileUpload({
 	limits: { fileSize: maxFileSize },
     abortOnLimit: true,
@@ -43,7 +43,7 @@ server.post('/upload', function(req, res) {
 	});
 });
 
-server.use('/', express.static('images'));
+server.use('/', serveStatic('images'));
 
 server.listen(port, host);
 print(host + (port == 80 ? '' : (':' + port)) + '에서 실행 중. . .');
